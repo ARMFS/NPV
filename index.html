@@ -122,6 +122,9 @@
       font-weight: 600;
       color: #475569;
       margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .form-group input {
@@ -240,7 +243,7 @@
     /* RESPONSIVE MEDIA QUERIES */
     @media (max-width: 768px) {
       body {
-        padding: 16px 10px;
+        padding: 16px 8px;
       }
 
       header h1 {
@@ -253,39 +256,47 @@
       }
 
       .card {
-        padding: 18px 14px;
+        padding: 16px 12px;
       }
     }
 
     @media (max-width: 480px) {
       body {
-        padding: 12px 6px;
+        padding: 12px 4px;
       }
 
       .card {
-        padding: 14px 10px;
+        padding: 12px 10px;
       }
 
       .input-row {
-        grid-template-columns: 1fr;
-        gap: 10px;
+        gap: 8px;
         margin-bottom: 10px;
       }
 
+      .form-group label {
+        font-size: 0.7rem;
+      }
+
+      .form-group input {
+        padding: 7px 6px;
+        font-size: 0.78rem;
+      }
+
       .result-item {
-        padding: 10px 12px;
+        padding: 10px 10px;
       }
 
       .result-label {
-        font-size: 0.75rem;
+        font-size: 0.73rem;
       }
 
       .result-value {
-        font-size: 0.925rem;
+        font-size: 0.9rem;
       }
 
       .result-item.highlight-green .result-value {
-        font-size: 1.05rem;
+        font-size: 1.025rem;
       }
     }
   </style>
@@ -294,7 +305,7 @@
 
 <div class="container">
   <header>
-    <h1>Pre-Funded Investment Return Calculator</h1>
+    <h1>Investment Return Calculator</h1>
     <p>Return modeling for flow-through investments</p>
   </header>
 
