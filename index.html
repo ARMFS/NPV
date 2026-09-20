@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pre-Funded Capital Call & Return Calculator</title>
+  <title>Pre-Funded Return Calculator</title>
   <style>
     :root {
       --primary: #1e3a8a;
@@ -12,8 +12,9 @@
       --text: #1f2937;
       --bg: #f8fafc;
       --card-bg: #ffffff;
-      --border: #e2e8f0;
+      --border: #cbd5e1;
       --success: #15803d;
+      --success-bg: #f0fdf4;
     }
 
     * {
@@ -33,7 +34,7 @@
     }
 
     .container {
-      max-width: 900px;
+      max-width: 960px;
       width: 100%;
     }
 
@@ -44,7 +45,7 @@
 
     header h1 {
       color: var(--primary);
-      font-size: 1.75rem;
+      font-size: 1.8rem;
       font-weight: 700;
     }
 
@@ -75,59 +76,93 @@
     }
 
     .card h2 {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       color: var(--primary);
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       padding-bottom: 8px;
       border-bottom: 2px solid var(--primary-light);
     }
 
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: #475569;
-      margin-bottom: 6px;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 1rem;
-      color: var(--text);
-      background-color: #fff;
-      transition: border-color 0.2s;
-    }
-
-    .form-group input:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    .section-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #64748b;
+      margin-top: 12px;
+      margin-bottom: 8px;
     }
 
     .input-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-size: 0.825rem;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 4px;
+    }
+
+    .form-group input, .form-group select {
+      padding: 9px 11px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      color: var(--text);
+      background-color: #fff;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      background-color: var(--primary-light);
+      border-radius: 8px;
+      margin-top: 16px;
+      border: 1px solid #bfdbfe;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .checkbox-group label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
     }
 
     .results-list {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
     .result-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px;
+      padding: 12px 14px;
       border-radius: 8px;
       background-color: #f1f5f9;
     }
@@ -138,14 +173,20 @@
     }
 
     .result-item.highlight-green {
-      background-color: #f0fdf4;
+      background-color: var(--success-bg);
       border: 1px solid #bbf7d0;
     }
 
+    .result-item.optional-result {
+      display: none;
+      background-color: #fef3c7;
+      border: 1px solid #fde68a;
+    }
+
     .result-label {
-      font-size: 0.9rem;
+      font-size: 0.875rem;
       color: #334155;
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .result-label small {
@@ -156,14 +197,14 @@
     }
 
     .result-value {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--primary);
     }
 
     .result-item.highlight-green .result-value {
       color: var(--success);
-      font-size: 1.3rem;
+      font-size: 1.25rem;
     }
 
     footer {
@@ -178,178 +219,230 @@
 
 <div class="container">
   <header>
-    <h1>Pre-Funded Capital Call Return Model</h1>
-    <p>Discount deferred obligations and calculate true 1-year anniversary ROI</p>
+    <h1>Pre-Funded Investment Return Calculator</h1>
+    <p>Real-world return modeling for flow-through investments with deferred obligations</p>
   </header>
 
   <div class="grid">
     <!-- INPUTS CARD -->
     <div class="card">
-      <h2>Inputs & Assumptions</h2>
+      <h2>Transaction Details</h2>
 
-      <div class="form-group">
-        <label for="startDate">Start Date (Day 1)</label>
-        <input type="date" id="startDate">
-      </div>
-
-      <div class="form-group">
-        <label for="initialOutlay">Initial Outlay Check ($)</label>
-        <input type="number" id="initialOutlay" value="50000" step="500">
-      </div>
-
+      <!-- OUTFLOW -->
+      <div class="section-title">1. Initial Outflow</div>
       <div class="input-row">
         <div class="form-group">
-          <label for="obligationAmount">Future Obligation ($)</label>
+          <label for="outflowAmount">Outflow Amount ($)</label>
+          <input type="number" id="outflowAmount" value="50000" step="500">
+        </div>
+        <div class="form-group">
+          <label for="outflowDate">Outflow Date</label>
+          <input type="date" id="outflowDate">
+        </div>
+      </div>
+
+      <!-- OBLIGATION -->
+      <div class="section-title">2. Deferred Obligation</div>
+      <div class="input-row">
+        <div class="form-group">
+          <label for="obligationAmount">Obligation Amount ($)</label>
           <input type="number" id="obligationAmount" value="8266" step="100">
         </div>
-
         <div class="form-group">
           <label for="obligationDate">Obligation Date</label>
           <input type="date" id="obligationDate">
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="discountRate">After-Tax Discount / Reserve Rate (%)</label>
-        <input type="number" id="discountRate" value="2.2" step="0.1">
-      </div>
-
+      <!-- INFLOW -->
+      <div class="section-title">3. Deal Inflow</div>
       <div class="input-row">
         <div class="form-group">
-          <label for="inflowAmount">Deal Payout Inflow ($)</label>
+          <label for="inflowAmount">Inflow Amount ($)</label>
           <input type="number" id="inflowAmount" value="75000" step="1000">
         </div>
-
         <div class="form-group">
-          <label for="inflowDate">Payout Inflow Date</label>
+          <label for="inflowDate">Inflow Date</label>
           <input type="date" id="inflowDate">
         </div>
       </div>
+
+      <!-- RATES & TAX -->
+      <div class="section-title">4. Reserve & Tax Rates</div>
+      <div class="input-row">
+        <div class="form-group">
+          <label for="grossRate">Gross Reserve Rate (%)</label>
+          <input type="number" id="grossRate" value="4.40" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="taxRate">Tax Rate (%)</label>
+          <input type="number" id="taxRate" value="53.54" step="0.01">
+        </div>
+      </div>
+
+      <!-- OPTIONAL COASTING CHECKBOX -->
+      <div class="checkbox-group">
+        <input type="checkbox" id="enableCoasting">
+        <label for="enableCoasting">Coast Inflow to 1-Year Anniversary</label>
+      </div>
     </div>
 
-    <!-- OUTPUTS CARD -->
+    <!-- RESULTS CARD -->
     <div class="card">
-      <h2>Calculation Results</h2>
+      <h2>Return Summary</h2>
 
       <div class="results-list">
         <div class="result-item">
           <div class="result-label">
-            Pre-Funded Reserve Today
-            <small>Discounted PV of Year 2 Obligation</small>
+            After-Tax Reserve Rate
+            <small>Net Rate used to discount obligation</small>
           </div>
-          <div class="result-value" id="pvReserve">$0.00</div>
+          <div class="result-value" id="netRateVal">0.00%</div>
+        </div>
+
+        <div class="result-item">
+          <div class="result-label">
+            Pre-Funded Reserve Today
+            <small>Day 1 PV of Year 2 Obligation</small>
+          </div>
+          <div class="result-value" id="pvReserveVal">$0.00</div>
         </div>
 
         <div class="result-item highlight">
           <div class="result-label">
-            Total Cash Committed (Day 1)
-            <small>Initial Outlay + Pre-Funded Reserve</small>
+            Total Committed Today
+            <small>Initial Outflow + Pre-Funded Reserve</small>
           </div>
-          <div class="result-value" id="totalCommitted">$0.00</div>
+          <div class="result-value" id="totalCommittedVal">$0.00</div>
+        </div>
+
+        <!-- OPTIONAL COASTING VALUE DISPLAY -->
+        <div class="result-item optional-result" id="coastingResultRow">
+          <div class="result-label">
+            Coasted 1-Year Value
+            <small>Inflow grown at Net Rate to Day 365</small>
+          </div>
+          <div class="result-value" id="coastingValueVal">$0.00</div>
         </div>
 
         <div class="result-item">
           <div class="result-label">
-            Days to Obligation
-            <small>Calendar days discounted</small>
+            Net Dollar Profit
+            <small>Total Cash Gain</small>
           </div>
-          <div class="result-value" id="daysObligation">0 days</div>
-        </div>
-
-        <div class="result-item">
-          <div class="result-label">
-            1-Year Anniversary Value
-            <small>Payout coasted at reserve rate to Day 365</small>
-          </div>
-          <div class="result-value" id="anniversaryValue">$0.00</div>
+          <div class="result-value" id="netProfitVal">$0.00</div>
         </div>
 
         <div class="result-item highlight-green">
           <div class="result-label">
-            Real-World 1-Year ROI
-            <small>Net 1-Year Gain / Total Committed</small>
+            Return Rate
+            <small>Net Return on Committed Capital</small>
           </div>
-          <div class="result-value" id="realRoi">0.00%</div>
+          <div class="result-value" id="returnRateVal">0.00%</div>
+        </div>
+
+        <div class="result-item highlight">
+          <div class="result-label">
+            Gross Pre-Tax Equivalent Rate
+            <small>Pre-Tax GIC Yield to match Net Return</small>
+          </div>
+          <div class="result-value" id="grossEqRateVal">0.00%</div>
         </div>
       </div>
     </div>
   </div>
 
   <footer>
-    <p>Pre-Funded Discounting Tool • Ready for GitHub Pages</p>
+    <p>Pre-Funded Investment Return Model • Ready for GitHub Pages</p>
   </footer>
 </div>
 
 <script>
-  function initDates() {
+  function initDefaults() {
     const today = new Date();
     const currentYear = today.getFullYear();
 
-    // Default Start Date = Today
-    document.getElementById('startDate').value = today.toISOString().split('T')[0];
+    // Outflow Date = Today
+    document.getElementById('outflowDate').value = today.toISOString().split('T')[0];
 
     // Default Inflow Date = Next year April 1
-    const nextApril1 = `${currentYear + 1}-04-01`;
-    document.getElementById('inflowDate').value = nextApril1;
+    document.getElementById('inflowDate').value = `${currentYear + 1}-04-01`;
 
     // Default Obligation Date = Year after next April 1
-    const yearAfterNextApril1 = `${currentYear + 2}-04-01`;
-    document.getElementById('obligationDate').value = yearAfterNextApril1;
+    document.getElementById('obligationDate').value = `${currentYear + 2}-04-01`;
   }
 
   function calculate() {
-    const startDate = new Date(document.getElementById('startDate').value);
-    const obligationDate = new Date(document.getElementById('obligationDate').value);
-    const inflowDate = new Date(document.getElementById('inflowDate').value);
+    const dOutflow = new Date(document.getElementById('outflowDate').value);
+    const dObligation = new Date(document.getElementById('obligationDate').value);
+    const dInflow = new Date(document.getElementById('inflowDate').value);
 
-    const initialOutlay = parseFloat(document.getElementById('initialOutlay').value) || 0;
-    const obligationAmount = parseFloat(document.getElementById('obligationAmount').value) || 0;
-    const inflowAmount = parseFloat(document.getElementById('inflowAmount').value) || 0;
-    const ratePercent = parseFloat(document.getElementById('discountRate').value) || 0;
+    const amountOutflow = parseFloat(document.getElementById('outflowAmount').value) || 0;
+    const amountObligation = parseFloat(document.getElementById('obligationAmount').value) || 0;
+    const amountInflow = parseFloat(document.getElementById('inflowAmount').value) || 0;
 
-    const r = ratePercent / 100;
+    const grossRatePct = parseFloat(document.getElementById('grossRate').value) || 0;
+    const taxRatePct = parseFloat(document.getElementById('taxRate').value) || 0;
 
-    if (isNaN(startDate.getTime()) || isNaN(obligationDate.getTime()) || isNaN(inflowDate.getTime())) {
+    const enableCoasting = document.getElementById('enableCoasting').checked;
+
+    if (isNaN(dOutflow.getTime()) || isNaN(dObligation.getTime()) || isNaN(dInflow.getTime())) {
       return;
     }
 
-    // Days calculations
+    // Rates
+    const grossRate = grossRatePct / 100;
+    const taxRate = taxRatePct / 100;
+    const netRate = grossRate * (1 - taxRate);
+
+    // Days Calculations
     const msPerDay = 1000 * 60 * 60 * 24;
-    const daysObligation = Math.max(0, Math.round((obligationDate - startDate) / msPerDay));
-    const daysInflow = Math.max(0, Math.round((inflowDate - startDate) / msPerDay));
+    const daysObligation = Math.max(0, Math.round((dObligation - dOutflow) / msPerDay));
+    const daysInflow = Math.max(0, Math.round((dInflow - dOutflow) / msPerDay));
 
-    // 1-Year Anniversary Date (365 days after Start Date)
-    const daysCoasting = Math.max(0, 365 - daysInflow);
+    // 1. Discount Obligation to Day 1 at Net Reserve Rate
+    const pvReserve = amountObligation / Math.pow(1 + netRate, daysObligation / 365);
+    const totalCommitted = amountOutflow + pvReserve;
 
-    // 1. Discount Future Obligation back to Day 1
-    const pvReserve = obligationAmount / Math.pow(1 + r, daysObligation / 365);
-    const totalCommitted = initialOutlay + pvReserve;
+    let finalInflowValue = amountInflow;
 
-    // 2. Coast Inflow to 1-Year Anniversary
-    const anniversaryValue = inflowAmount * Math.pow(1 + r, daysCoasting / 365);
+    if (enableCoasting) {
+      document.getElementById('coastingResultRow').style.display = 'flex';
+      const daysCoasting = Math.max(0, 365 - daysInflow);
+      finalInflowValue = amountInflow * Math.pow(1 + netRate, daysCoasting / 365);
+      document.getElementById('coastingValueVal').innerText = formatCurrency(finalInflowValue);
+    } else {
+      document.getElementById('coastingResultRow').style.display = 'none';
+    }
 
-    // 3. Calculate 1-Year ROI
-    const netProfit1Yr = anniversaryValue - totalCommitted;
-    const realRoi = totalCommitted > 0 ? (netProfit1Yr / totalCommitted) * 100 : 0;
+    // 2. Net Profit & Return Rates
+    const netProfit = finalInflowValue - totalCommitted;
+    const returnRate = totalCommitted > 0 ? (netProfit / totalCommitted) : 0;
 
-    // Format outputs
-    const fmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+    // Gross Pre-Tax Equivalent Return Rate
+    const grossEqRate = taxRate < 1 ? (returnRate / (1 - taxRate)) : 0;
 
-    document.getElementById('pvReserve').innerText = fmt.format(pvReserve);
-    document.getElementById('totalCommitted').innerText = fmt.format(totalCommitted);
-    document.getElementById('daysObligation').innerText = `${daysObligation} days`;
-    document.getElementById('anniversaryValue').innerText = fmt.format(anniversaryValue);
-    document.getElementById('realRoi').innerText = `${realRoi.toFixed(2)}%`;
+    // Output Formatting
+    document.getElementById('netRateVal').innerText = `${(netRate * 100).toFixed(2)}%`;
+    document.getElementById('pvReserveVal').innerText = formatCurrency(pvReserve);
+    document.getElementById('totalCommittedVal').innerText = formatCurrency(totalCommitted);
+    document.getElementById('netProfitVal').innerText = formatCurrency(netProfit);
+    document.getElementById('returnRateVal').innerText = `${(returnRate * 100).toFixed(2)}%`;
+    document.getElementById('grossEqRateVal').innerText = `${(grossEqRate * 100).toFixed(2)}%`;
   }
 
-  // Attach event listeners
+  function formatCurrency(val) {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
-    initDates();
+    initDefaults();
     calculate();
 
-    const inputs = document.querySelectorAll('input');
+    const inputs = document.querySelectorAll('input, select');
     inputs.forEach(input => {
       input.addEventListener('input', calculate);
+      input.addEventListener('change', calculate);
     });
   });
 </script>
