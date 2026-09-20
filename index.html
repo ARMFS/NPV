@@ -231,7 +231,7 @@
       <div class="input-row">
         <div class="form-group">
           <label for="outflowAmount">Amount ($)</label>
-          <input type="number" id="outflowAmount" value="50000" step="500">
+          <input type="text" id="outflowAmount" value="50,000" inputmode="decimal">
         </div>
         <div class="form-group">
           <label for="outflowDate">Outflow Date</label>
@@ -244,7 +244,7 @@
       <div class="input-row">
         <div class="form-group">
           <label for="inflowAmount">Amount ($)</label>
-          <input type="number" id="inflowAmount" value="75000" step="1000">
+          <input type="text" id="inflowAmount" value="75,000" inputmode="decimal">
         </div>
         <div class="form-group">
           <label for="inflowDate">Inflow Date</label>
@@ -257,7 +257,7 @@
       <div class="input-row">
         <div class="form-group">
           <label for="obligationAmount">Amount ($)</label>
-          <input type="number" id="obligationAmount" value="8266" step="100">
+          <input type="text" id="obligationAmount" value="8,266" inputmode="decimal">
         </div>
         <div class="form-group">
           <label for="obligationDate">Obligation Date</label>
@@ -274,7 +274,7 @@
         </div>
         <div class="form-group">
           <label for="taxRate">Tax Rate (%)</label>
-          <input type="number" id="taxRate" value="53.54" step="0.01">
+          <input type="number" id="taxRate" value="50.00" step="0.01">
         </div>
       </div>
 
@@ -303,7 +303,7 @@
             Pre-Funded Reserve Today
             <small>Day 1 PV of Deferred Obligation</small>
           </div>
-          <div class="result-value" id="pvReserveVal">$0.00</div>
+          <div class="result-value" id="pvReserveVal">$0</div>
         </div>
 
         <div class="result-item highlight">
@@ -311,7 +311,7 @@
             Total Committed Today
             <small>Initial Outflow + Pre-Funded Reserve</small>
           </div>
-          <div class="result-value" id="totalCommittedVal">$0.00</div>
+          <div class="result-value" id="totalCommittedVal">$0</div>
         </div>
 
         <div class="result-item">
@@ -319,7 +319,7 @@
             Net Dollar Profit
             <small>Total Cash Gain</small>
           </div>
-          <div class="result-value" id="netProfitVal">$0.00</div>
+          <div class="result-value" id="netProfitVal">$0</div>
         </div>
 
         <div class="result-item highlight-green">
@@ -342,7 +342,7 @@
   </div>
 
   <footer>
-    <p>Pre-Funded Investment Return Model</p>
+    <p>Pre-Funded Investment Return Model • GitHub Pages Ready</p>
   </footer>
 </div>
 
@@ -361,14 +361,44 @@
     document.getElementById('obligationDate').value = `${currentYear + 2}-04-01`;
   }
 
+  function parseFormattedNumber(val) {
+    if (typeof val === 'number') return val;
+    return parseFloat(String(val).replace(/,/g, '')) || 0;
+  }
+
+  function handleInputFormatting(input) {
+    const start = input.selectionStart;
+    const oldLength = input.value.length;
+
+    let raw = input.value.replace(/[^0-9.]/g, '');
+    if (!raw) {
+      input.value = '';
+      return;
+    }
+
+    let parts = raw.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    if (parts.length > 2) {
+      parts = [parts[0], parts.slice(1).join('')];
+    }
+
+    input.value = parts.join('.');
+
+    const newLength = input.value.length;
+    const newPos = Math.max(0, start + (newLength - oldLength));
+    try {
+      input.setSelectionRange(newPos, newPos);
+    } catch (e) {}
+  }
+
   function calculate() {
     const dOutflow = new Date(document.getElementById('outflowDate').value);
     const dObligation = new Date(document.getElementById('obligationDate').value);
     const dInflow = new Date(document.getElementById('inflowDate').value);
 
-    const amountOutflow = parseFloat(document.getElementById('outflowAmount').value) || 0;
-    const amountObligation = parseFloat(document.getElementById('obligationAmount').value) || 0;
-    const amountInflow = parseFloat(document.getElementById('inflowAmount').value) || 0;
+    const amountOutflow = parseFormattedNumber(document.getElementById('outflowAmount').value);
+    const amountObligation = parseFormattedNumber(document.getElementById('obligationAmount').value);
+    const amountInflow = parseFormattedNumber(document.getElementById('inflowAmount').value);
 
     const grossRatePct = parseFloat(document.getElementById('grossRate').value) || 0;
     const taxRatePct = parseFloat(document.getElementById('taxRate').value) || 0;
@@ -407,7 +437,7 @@
     // Gross Pre-Tax Equivalent Return Rate
     const grossEqRate = taxRate < 1 ? (returnRate / (1 - taxRate)) : 0;
 
-    // Output Formatting with Commas
+    // Output Formatting
     document.getElementById('netRateVal').innerText = `${(netRate * 100).toFixed(2)}%`;
     document.getElementById('pvReserveVal').innerText = formatCurrency(pvReserve);
     document.getElementById('totalCommittedVal').innerText = formatCurrency(totalCommitted);
@@ -417,19 +447,42 @@
   }
 
   function formatCurrency(val) {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(val);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
     initDefaults();
-    calculate();
 
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach(input => {
+    const formattedInputs = [
+      document.getElementById('outflowAmount'),
+      document.getElementById('inflowAmount'),
+      document.getElementById('obligationAmount')
+    ];
+
+    formattedInputs.forEach(input => {
+      input.addEventListener('input', (e) => {
+        handleInputFormatting(e.target);
+        calculate();
+      });
+      input.addEventListener('blur', (e) => {
+        handleInputFormatting(e.target);
+        calculate();
+      });
+    });
+
+    const allInputs = document.querySelectorAll('input');
+    allInputs.forEach(input => {
       input.addEventListener('input', calculate);
       input.addEventListener('change', calculate);
       input.addEventListener('keyup', calculate);
     });
+
+    calculate();
   });
 </script>
 
