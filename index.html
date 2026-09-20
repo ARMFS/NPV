@@ -126,7 +126,14 @@
       transition: border-color 0.2s;
     }
 
-    .form-group input:focus {
+    .form-group input[readonly] {
+      background-color: #f1f5f9;
+      color: #64748b;
+      cursor: not-allowed;
+      border-color: #e2e8f0;
+    }
+
+    .form-group input:focus:not([readonly]) {
       outline: none;
       border-color: var(--accent);
       box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
@@ -218,7 +225,7 @@
 <div class="container">
   <header>
     <h1>Pre-Funded Investment Return Calculator</h1>
-    <p>Modeling for flow-through investment returns</p>
+    <p>Return modeling for flow-through investments</p>
   </header>
 
   <div class="grid">
@@ -247,8 +254,8 @@
           <input type="text" id="inflowAmount" value="75,000" inputmode="decimal">
         </div>
         <div class="form-group">
-          <label for="inflowDate">Inflow Date</label>
-          <input type="date" id="inflowDate">
+          <label for="inflowDate">Inflow Date (Locked)</label>
+          <input type="date" id="inflowDate" readonly tabindex="-1">
         </div>
       </div>
 
@@ -260,8 +267,8 @@
           <input type="text" id="obligationAmount" value="8,266" inputmode="decimal">
         </div>
         <div class="form-group">
-          <label for="obligationDate">Obligation Date</label>
-          <input type="date" id="obligationDate">
+          <label for="obligationDate">Obligation Date (Locked)</label>
+          <input type="date" id="obligationDate" readonly tabindex="-1">
         </div>
       </div>
 
@@ -354,10 +361,10 @@
     // Outflow Date = Today
     document.getElementById('outflowDate').value = today.toISOString().split('T')[0];
 
-    // Default Inflow Date = Next year April 1
+    // Hardwired Inflow Date = Next year April 1
     document.getElementById('inflowDate').value = `${currentYear + 1}-04-01`;
 
-    // Default Obligation Date = Year after next April 1
+    // Hardwired Obligation Date = Year after next April 1
     document.getElementById('obligationDate').value = `${currentYear + 2}-04-01`;
   }
 
