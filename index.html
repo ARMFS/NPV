@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Pre-Funded Return Calculator</title>
-  <!-- Google Fonts: PT Mono & PT Sans -->
+  <!-- Google Fonts: PT Mono & Libre Franklin -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=PT+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700;800&family=PT+Mono&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -21,7 +21,7 @@
       --success: #15803d;
       --success-bg: #f0fdf4;
       --font-mono: 'PT Mono', monospace;
-      --font-sans: 'PT Sans', sans-serif;
+      --font-sans: 'Libre Franklin', sans-serif;
     }
 
     * {
@@ -60,18 +60,19 @@
       padding: 0 8px;
     }
 
-    /* 1. Header Title: PT Sans, Bold, Slightly Larger */
+    /* Header Title: Libre Franklin, Bold, Larger Size */
     header h1 {
       color: var(--primary);
-      font-size: 1.95rem;
-      font-weight: 700;
+      font-size: 2.3rem;
+      font-weight: 800;
       font-family: var(--font-sans);
+      letter-spacing: -0.02em;
     }
 
-    /* 2. Header Subtitle: PT Sans, Not Bold, Slightly Larger */
+    /* Header Subtitle: Libre Franklin, Regular Weight */
     header p {
       color: #64748b;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: 400;
       margin-top: 4px;
       font-family: var(--font-sans);
@@ -94,9 +95,9 @@
       min-width: 0;
     }
 
-    /* 3 & 4. Card Titles (Transaction Details / Return Summary): PT Sans, Not Bold, Slightly Larger */
+    /* Card Titles: Libre Franklin, Regular Weight */
     .card h2 {
-      font-size: 1.3rem;
+      font-size: 1.35rem;
       color: var(--primary);
       margin-bottom: 18px;
       padding-bottom: 8px;
@@ -296,15 +297,15 @@
       }
 
       header h1 {
-        font-size: 1.55rem;
+        font-size: 1.85rem;
       }
 
       header p {
-        font-size: 0.95rem;
+        font-size: 1rem;
       }
 
       .card h2 {
-        font-size: 1.2rem;
+        font-size: 1.25rem;
       }
 
       .grid {
@@ -320,6 +321,10 @@
     @media (max-width: 480px) {
       body {
         padding: 12px 4px;
+      }
+
+      header h1 {
+        font-size: 1.6rem;
       }
 
       .card {
