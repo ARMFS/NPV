@@ -127,16 +127,28 @@
       text-overflow: ellipsis;
     }
 
+    /* Standardized Input Sizing & iOS Date Height Fix */
     .form-group input {
       width: 100%;
       min-width: 0;
-      padding: 9px 11px;
+      height: 38px;
+      padding: 0 11px;
       border: 1px solid var(--border);
       border-radius: 6px;
       font-size: 0.875rem;
       color: var(--text);
       background-color: #fff;
       transition: border-color 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+      line-height: normal;
+    }
+
+    /* Fix iOS Safari Date Pseudo-Element Height */
+    input[type="date"]::-webkit-date-and-time-value {
+      text-align: left;
+      min-height: 1.2em;
+      margin: 0;
     }
 
     .form-group input:focus {
@@ -148,7 +160,8 @@
     .static-date-display {
       width: 100%;
       min-width: 0;
-      padding: 9px 11px;
+      height: 38px;
+      padding: 0 11px;
       border: 1px solid #e2e8f0;
       border-radius: 6px;
       font-size: 0.875rem;
@@ -156,7 +169,6 @@
       background-color: #f1f5f9;
       display: flex;
       align-items: center;
-      height: 38px;
       user-select: none;
       -webkit-user-select: none;
     }
@@ -288,7 +300,7 @@
       }
 
       .form-group input, .static-date-display {
-        padding: 7px 6px;
+        padding: 0 6px;
         font-size: 0.78rem;
         height: 34px;
       }
@@ -457,7 +469,7 @@
 
   function updateAprilDates(dOutflow) {
     const outflowYear = dOutflow.getFullYear();
-    const outflowMonth = dOutflow.getMonth(); // 0-indexed (0=Jan, 3=Apr)
+    const outflowMonth = dOutflow.getMonth();
     const outflowDay = dOutflow.getDate();
 
     let inflowYear = outflowYear;
@@ -466,8 +478,8 @@
     }
     let obligationYear = inflowYear + 1;
 
-    computedInflowDate = new Date(inflowYear, 3, 1); // April 1
-    computedObligationDate = new Date(obligationYear, 3, 1); // April 1
+    computedInflowDate = new Date(inflowYear, 3, 1);
+    computedObligationDate = new Date(obligationYear, 3, 1);
 
     const dateOptions = { month: 'short', day: 'numeric', year: 'numeric' };
     document.getElementById('inflowDateText').innerText = computedInflowDate.toLocaleDateString('en-US', dateOptions);
