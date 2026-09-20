@@ -28,6 +28,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: var(--font-mono);
     }
 
     html, body {
@@ -44,7 +45,7 @@
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
-      font-family: var(--font-sans);
+      font-family: var(--font-mono);
     }
 
     .container {
@@ -59,16 +60,19 @@
       padding: 0 8px;
     }
 
+    /* 1. Header Title: PT Sans, Bold, Slightly Larger */
     header h1 {
       color: var(--primary);
-      font-size: 1.6rem;
+      font-size: 1.85rem;
       font-weight: 700;
       font-family: var(--font-sans);
     }
 
+    /* 2. Header Subtitle: PT Sans, Not Bold, Slightly Larger */
     header p {
       color: #64748b;
-      font-size: 0.875rem;
+      font-size: 1.05rem;
+      font-weight: 400;
       margin-top: 4px;
       font-family: var(--font-sans);
     }
@@ -90,14 +94,15 @@
       min-width: 0;
     }
 
+    /* 3 & 4. Card Titles (Transaction Details / Return Summary): PT Sans, Not Bold, Slightly Larger */
     .card h2 {
-      font-size: 1.15rem;
+      font-size: 1.3rem;
       color: var(--primary);
       margin-bottom: 18px;
       padding-bottom: 8px;
       border-bottom: 2px solid var(--primary-light);
       font-family: var(--font-sans);
-      font-weight: 700;
+      font-weight: 400;
     }
 
     .section-title {
@@ -107,8 +112,7 @@
       color: #64748b;
       margin-top: 12px;
       margin-bottom: 8px;
-      font-family: var(--font-sans);
-      letter-spacing: 0.03em;
+      font-family: var(--font-mono);
     }
 
     .input-row {
@@ -126,14 +130,14 @@
     }
 
     .form-group label {
-      font-size: 0.8rem;
-      font-weight: 700;
+      font-size: 0.775rem;
+      font-weight: 600;
       color: #475569;
       margin-bottom: 4px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      font-family: var(--font-sans);
+      font-family: var(--font-mono);
     }
 
     /* Input Styling & iOS Height Fix */
@@ -212,11 +216,11 @@
     }
 
     .checkbox-group label {
-      font-size: 0.825rem;
-      font-weight: 700;
+      font-size: 0.775rem;
+      font-weight: 600;
       color: var(--primary);
       cursor: pointer;
-      font-family: var(--font-sans);
+      font-family: var(--font-mono);
     }
 
     .results-list {
@@ -248,19 +252,19 @@
     }
 
     .result-label {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #334155;
-      font-weight: 700;
+      font-weight: 600;
       min-width: 0;
-      font-family: var(--font-sans);
+      font-family: var(--font-mono);
     }
 
     .result-label small {
       display: block;
       color: #64748b;
-      font-size: 0.725rem;
+      font-size: 0.7rem;
       font-weight: normal;
-      font-family: var(--font-sans);
+      font-family: var(--font-mono);
     }
 
     .result-value {
@@ -282,7 +286,7 @@
       text-align: center;
       font-size: 0.75rem;
       color: #94a3b8;
-      font-family: var(--font-sans);
+      font-family: var(--font-mono);
     }
 
     /* RESPONSIVE MEDIA QUERIES */
@@ -292,7 +296,15 @@
       }
 
       header h1 {
-        font-size: 1.35rem;
+        font-size: 1.55rem;
+      }
+
+      header p {
+        font-size: 0.95rem;
+      }
+
+      .card h2 {
+        font-size: 1.2rem;
       }
 
       .grid {
@@ -320,7 +332,7 @@
       }
 
       .form-group label {
-        font-size: 0.725rem;
+        font-size: 0.7rem;
       }
 
       .form-group input, .static-date-display, input[type="date"] {
@@ -335,7 +347,7 @@
       }
 
       .result-label {
-        font-size: 0.78rem;
+        font-size: 0.73rem;
       }
 
       .result-value {
