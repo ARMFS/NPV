@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pre-Funded Return Calculator</title>
+  <!-- Google Font: PT Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Mono&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --primary: #1e3a8a;
@@ -21,7 +26,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'PT Mono', monospace;
     }
 
     body {
@@ -45,13 +50,13 @@
 
     header h1 {
       color: var(--primary);
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       font-weight: 700;
     }
 
     header p {
       color: #64748b;
-      font-size: 0.95rem;
+      font-size: 0.875rem;
       margin-top: 4px;
     }
 
@@ -76,7 +81,7 @@
     }
 
     .card h2 {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       color: var(--primary);
       margin-bottom: 18px;
       padding-bottom: 8px;
@@ -84,10 +89,9 @@
     }
 
     .section-title {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
       color: #64748b;
       margin-top: 12px;
       margin-bottom: 8px;
@@ -106,23 +110,23 @@
     }
 
     .form-group label {
-      font-size: 0.825rem;
+      font-size: 0.775rem;
       font-weight: 600;
       color: #475569;
       margin-bottom: 4px;
     }
 
-    .form-group input, .form-group select {
+    .form-group input {
       padding: 9px 11px;
       border: 1px solid var(--border);
       border-radius: 6px;
-      font-size: 0.95rem;
+      font-size: 0.875rem;
       color: var(--text);
       background-color: #fff;
       transition: border-color 0.2s;
     }
 
-    .form-group input:focus, .form-group select:focus {
+    .form-group input:focus {
       outline: none;
       border-color: var(--accent);
       box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
@@ -146,7 +150,7 @@
     }
 
     .checkbox-group label {
-      font-size: 0.875rem;
+      font-size: 0.775rem;
       font-weight: 600;
       color: var(--primary);
       cursor: pointer;
@@ -177,14 +181,8 @@
       border: 1px solid #bbf7d0;
     }
 
-    .result-item.optional-result {
-      display: none;
-      background-color: #fef3c7;
-      border: 1px solid #fde68a;
-    }
-
     .result-label {
-      font-size: 0.875rem;
+      font-size: 0.8rem;
       color: #334155;
       font-weight: 600;
     }
@@ -192,25 +190,25 @@
     .result-label small {
       display: block;
       color: #64748b;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: normal;
     }
 
     .result-value {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--primary);
     }
 
     .result-item.highlight-green .result-value {
       color: var(--success);
-      font-size: 1.25rem;
+      font-size: 1.15rem;
     }
 
     footer {
       margin-top: 24px;
       text-align: center;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: #94a3b8;
     }
   </style>
@@ -220,7 +218,7 @@
 <div class="container">
   <header>
     <h1>Pre-Funded Investment Return Calculator</h1>
-    <p>Real-world return modeling for flow-through investments with deferred obligations</p>
+    <p>Real-world return modeling for flow-through investments</p>
   </header>
 
   <div class="grid">
@@ -228,11 +226,11 @@
     <div class="card">
       <h2>Transaction Details</h2>
 
-      <!-- OUTFLOW -->
+      <!-- 1. OUTFLOW -->
       <div class="section-title">1. Initial Outflow</div>
       <div class="input-row">
         <div class="form-group">
-          <label for="outflowAmount">Outflow Amount ($)</label>
+          <label for="outflowAmount">Amount ($)</label>
           <input type="number" id="outflowAmount" value="50000" step="500">
         </div>
         <div class="form-group">
@@ -241,24 +239,11 @@
         </div>
       </div>
 
-      <!-- OBLIGATION -->
-      <div class="section-title">2. Deferred Obligation</div>
+      <!-- 2. INFLOW -->
+      <div class="section-title">2. Deal Inflow</div>
       <div class="input-row">
         <div class="form-group">
-          <label for="obligationAmount">Obligation Amount ($)</label>
-          <input type="number" id="obligationAmount" value="8266" step="100">
-        </div>
-        <div class="form-group">
-          <label for="obligationDate">Obligation Date</label>
-          <input type="date" id="obligationDate">
-        </div>
-      </div>
-
-      <!-- INFLOW -->
-      <div class="section-title">3. Deal Inflow</div>
-      <div class="input-row">
-        <div class="form-group">
-          <label for="inflowAmount">Inflow Amount ($)</label>
+          <label for="inflowAmount">Amount ($)</label>
           <input type="number" id="inflowAmount" value="75000" step="1000">
         </div>
         <div class="form-group">
@@ -267,23 +252,36 @@
         </div>
       </div>
 
-      <!-- RATES & TAX -->
+      <!-- 3. DEFERRED OBLIGATION -->
+      <div class="section-title">3. Deferred Obligation</div>
+      <div class="input-row">
+        <div class="form-group">
+          <label for="obligationAmount">Amount ($)</label>
+          <input type="number" id="obligationAmount" value="8266" step="100">
+        </div>
+        <div class="form-group">
+          <label for="obligationDate">Obligation Date</label>
+          <input type="date" id="obligationDate">
+        </div>
+      </div>
+
+      <!-- 4. RATES & TAX -->
       <div class="section-title">4. Reserve & Tax Rates</div>
       <div class="input-row">
         <div class="form-group">
           <label for="grossRate">Gross Reserve Rate (%)</label>
-          <input type="number" id="grossRate" value="4.40" step="0.1">
+          <input type="number" id="grossRate" value="4.40" step="0.01">
         </div>
         <div class="form-group">
           <label for="taxRate">Tax Rate (%)</label>
-          <input type="number" id="taxRate" value="53.54" step="0.01">
+          <input type="number" id="taxRate" value="50.00" step="0.01">
         </div>
       </div>
 
-      <!-- OPTIONAL COASTING CHECKBOX -->
+      <!-- RE-INVEST CHECKBOX -->
       <div class="checkbox-group">
         <input type="checkbox" id="enableCoasting">
-        <label for="enableCoasting">Coast Inflow to 1-Year Anniversary</label>
+        <label for="enableCoasting">Re invest inflow to 1-year anniversary date</label>
       </div>
     </div>
 
@@ -295,7 +293,7 @@
         <div class="result-item">
           <div class="result-label">
             After-Tax Reserve Rate
-            <small>Net Rate used to discount obligation</small>
+            <small>Net yield used for obligation reserve</small>
           </div>
           <div class="result-value" id="netRateVal">0.00%</div>
         </div>
@@ -303,7 +301,7 @@
         <div class="result-item">
           <div class="result-label">
             Pre-Funded Reserve Today
-            <small>Day 1 PV of Year 2 Obligation</small>
+            <small>Day 1 PV of Deferred Obligation</small>
           </div>
           <div class="result-value" id="pvReserveVal">$0.00</div>
         </div>
@@ -314,15 +312,6 @@
             <small>Initial Outflow + Pre-Funded Reserve</small>
           </div>
           <div class="result-value" id="totalCommittedVal">$0.00</div>
-        </div>
-
-        <!-- OPTIONAL COASTING VALUE DISPLAY -->
-        <div class="result-item optional-result" id="coastingResultRow">
-          <div class="result-label">
-            Coasted 1-Year Value
-            <small>Inflow grown at Net Rate to Day 365</small>
-          </div>
-          <div class="result-value" id="coastingValueVal">$0.00</div>
         </div>
 
         <div class="result-item">
@@ -353,7 +342,7 @@
   </div>
 
   <footer>
-    <p>Pre-Funded Investment Return Model • Ready for GitHub Pages</p>
+    <p>Pre-Funded Investment Return Model • GitHub Pages Ready</p>
   </footer>
 </div>
 
@@ -407,12 +396,8 @@
     let finalInflowValue = amountInflow;
 
     if (enableCoasting) {
-      document.getElementById('coastingResultRow').style.display = 'flex';
       const daysCoasting = Math.max(0, 365 - daysInflow);
       finalInflowValue = amountInflow * Math.pow(1 + netRate, daysCoasting / 365);
-      document.getElementById('coastingValueVal').innerText = formatCurrency(finalInflowValue);
-    } else {
-      document.getElementById('coastingResultRow').style.display = 'none';
     }
 
     // 2. Net Profit & Return Rates
@@ -422,7 +407,7 @@
     // Gross Pre-Tax Equivalent Return Rate
     const grossEqRate = taxRate < 1 ? (returnRate / (1 - taxRate)) : 0;
 
-    // Output Formatting
+    // Output Formatting with Commas
     document.getElementById('netRateVal').innerText = `${(netRate * 100).toFixed(2)}%`;
     document.getElementById('pvReserveVal').innerText = formatCurrency(pvReserve);
     document.getElementById('totalCommittedVal').innerText = formatCurrency(totalCommitted);
@@ -439,10 +424,11 @@
     initDefaults();
     calculate();
 
-    const inputs = document.querySelectorAll('input, select');
+    const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
       input.addEventListener('input', calculate);
       input.addEventListener('change', calculate);
+      input.addEventListener('keyup', calculate);
     });
   });
 </script>
