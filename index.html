@@ -139,17 +139,26 @@
       transition: border-color 0.2s;
     }
 
-    .form-group input[readonly] {
-      background-color: #f1f5f9;
-      color: #64748b;
-      cursor: not-allowed;
-      border-color: #e2e8f0;
-    }
-
-    .form-group input:focus:not([readonly]) {
+    .form-group input:focus {
       outline: none;
       border-color: var(--accent);
       box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .static-date-display {
+      width: 100%;
+      min-width: 0;
+      padding: 9px 11px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      color: #64748b;
+      background-color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      height: 38px;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .checkbox-group {
@@ -278,9 +287,10 @@
         font-size: 0.7rem;
       }
 
-      .form-group input {
+      .form-group input, .static-date-display {
         padding: 7px 6px;
         font-size: 0.78rem;
+        height: 34px;
       }
 
       .result-item {
@@ -305,6 +315,7 @@
 
 <div class="container">
   <header>
+    <br/>
     <h1>Investment Calculator</h1>
     <p>Return modeling for FT investments</p>
   </header>
@@ -335,8 +346,8 @@
           <input type="text" id="inflowAmount" value="76,000" inputmode="decimal">
         </div>
         <div class="form-group">
-          <label for="inflowDate">Inflow Date</label>
-          <input type="date" id="inflowDate" readonly tabindex="-1">
+          <label>Inflow Date</label>
+          <div class="static-date-display" id="inflowDateText">Apr 1, 2027</div>
         </div>
       </div>
 
@@ -348,8 +359,8 @@
           <input type="text" id="obligationAmount" value="8,000" inputmode="decimal">
         </div>
         <div class="form-group">
-          <label for="obligationDate">Obligation Date</label>
-          <input type="date" id="obligationDate" readonly tabindex="-1">
+          <label>Obligation Date</label>
+          <div class="static-date-display" id="obligationDateText">Apr 1, 2028</div>
         </div>
       </div>
 
@@ -435,18 +446,32 @@
 </div>
 
 <script>
+  let computedInflowDate = new Date();
+  let computedObligationDate = new Date();
+
   function initDefaults() {
     const today = new Date();
-    const currentYear = today.getFullYear();
-
-    // Outflow Date = Today
     document.getElementById('outflowDate').value = today.toISOString().split('T')[0];
+    updateAprilDates(today);
+  }
 
-    // Hardwired Inflow Date = Next year April 1
-    document.getElementById('inflowDate').value = `${currentYear + 1}-04-01`;
+  function updateAprilDates(dOutflow) {
+    const outflowYear = dOutflow.getFullYear();
+    const outflowMonth = dOutflow.getMonth(); // 0-indexed (0=Jan, 3=Apr)
+    const outflowDay = dOutflow.getDate();
 
-    // Hardwired Obligation Date = Year after next April 1
-    document.getElementById('obligationDate').value = `${currentYear + 2}-04-01`;
+    let inflowYear = outflowYear;
+    if (outflowMonth > 3 || (outflowMonth === 3 && outflowDay > 1)) {
+      inflowYear = outflowYear + 1;
+    }
+    let obligationYear = inflowYear + 1;
+
+    computedInflowDate = new Date(inflowYear, 3, 1); // April 1
+    computedObligationDate = new Date(obligationYear, 3, 1); // April 1
+
+    const dateOptions = { month: 'short', day: 'numeric', year: 'numeric' };
+    document.getElementById('inflowDateText').innerText = computedInflowDate.toLocaleDateString('en-US', dateOptions);
+    document.getElementById('obligationDateText').innerText = computedObligationDate.toLocaleDateString('en-US', dateOptions);
   }
 
   function parseFormattedNumber(val) {
@@ -480,9 +505,15 @@
   }
 
   function calculate() {
-    const dOutflow = new Date(document.getElementById('outflowDate').value);
-    const dObligation = new Date(document.getElementById('obligationDate').value);
-    const dInflow = new Date(document.getElementById('inflowDate').value);
+    const outflowVal = document.getElementById('outflowDate').value;
+    const dOutflow = outflowVal ? new Date(outflowVal + 'T00:00:00') : new Date();
+
+    if (!isNaN(dOutflow.getTime())) {
+      updateAprilDates(dOutflow);
+    }
+
+    const dObligation = computedObligationDate;
+    const dInflow = computedInflowDate;
 
     const amountOutflow = parseFormattedNumber(document.getElementById('outflowAmount').value);
     const amountObligation = parseFormattedNumber(document.getElementById('obligationAmount').value);
@@ -493,7 +524,7 @@
 
     const enableCoasting = document.getElementById('enableCoasting').checked;
 
-    if (isNaN(dOutflow.getTime()) || isNaN(dObligation.getTime()) || isNaN(dInflow.getTime())) {
+    if (isNaN(dOutflow.getTime())) {
       return;
     }
 
