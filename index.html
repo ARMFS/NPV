@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pre-Funded Capital Call & Return Calculator</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #eff6ff;
+      --accent: #0284c7;
+      --text: #1f2937;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --success: #15803d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 24px 16px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+    }
+
+    header {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    header h1 {
+      color: var(--primary);
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+
+    header p {
+      color: #64748b;
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      color: var(--primary);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--primary-light);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 6px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 1rem;
+      color: var(--text);
+      background-color: #fff;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .results-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border-radius: 8px;
+      background-color: #f1f5f9;
+    }
+
+    .result-item.highlight {
+      background-color: var(--primary-light);
+      border: 1px solid #bfdbfe;
+    }
+
+    .result-item.highlight-green {
+      background-color: #f0fdf4;
+      border: 1px solid #bbf7d0;
+    }
+
+    .result-label {
+      font-size: 0.9rem;
+      color: #334155;
+      font-weight: 500;
+    }
+
+    .result-label small {
+      display: block;
+      color: #64748b;
+      font-size: 0.75rem;
+      font-weight: normal;
+    }
+
+    .result-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .result-item.highlight-green .result-value {
+      color: var(--success);
+      font-size: 1.3rem;
+    }
+
+    footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Pre-Funded Capital Call Return Model</h1>
+    <p>Discount deferred obligations and calculate true 1-year anniversary ROI</p>
+  </header>
+
+  <div class="grid">
+    <!-- INPUTS CARD -->
+    <div class="card">
+      <h2>Inputs & Assumptions</h2>
+
+      <div class="form-group">
+        <label for="startDate">Start Date (Day 1)</label>
+        <input type="date" id="startDate">
+      </div>
+
+      <div class="form-group">
+        <label for="initialOutlay">Initial Outlay Check ($)</label>
+        <input type="number" id="initialOutlay" value="50000" step="500">
+      </div>
+
+      <div class="input-row">
+        <div class="form-group">
+          <label for="obligationAmount">Future Obligation ($)</label>
+          <input type="number" id="obligationAmount" value="8266" step="100">
+        </div>
+
+        <div class="form-group">
+          <label for="obligationDate">Obligation Date</label>
+          <input type="date" id="obligationDate">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="discountRate">After-Tax Discount / Reserve Rate (%)</label>
+        <input type="number" id="discountRate" value="2.2" step="0.1">
+      </div>
+
+      <div class="input-row">
+        <div class="form-group">
+          <label for="inflowAmount">Deal Payout Inflow ($)</label>
+          <input type="number" id="inflowAmount" value="75000" step="1000">
+        </div>
+
+        <div class="form-group">
+          <label for="inflowDate">Payout Inflow Date</label>
+          <input type="date" id="inflowDate">
+        </div>
+      </div>
+    </div>
+
+    <!-- OUTPUTS CARD -->
+    <div class="card">
+      <h2>Calculation Results</h2>
+
+      <div class="results-list">
+        <div class="result-item">
+          <div class="result-label">
+            Pre-Funded Reserve Today
+            <small>Discounted PV of Year 2 Obligation</small>
+          </div>
+          <div class="result-value" id="pvReserve">$0.00</div>
+        </div>
+
+        <div class="result-item highlight">
+          <div class="result-label">
+            Total Cash Committed (Day 1)
+            <small>Initial Outlay + Pre-Funded Reserve</small>
+          </div>
+          <div class="result-value" id="totalCommitted">$0.00</div>
+        </div>
+
+        <div class="result-item">
+          <div class="result-label">
+            Days to Obligation
+            <small>Calendar days discounted</small>
+          </div>
+          <div class="result-value" id="daysObligation">0 days</div>
+        </div>
+
+        <div class="result-item">
+          <div class="result-label">
+            1-Year Anniversary Value
+            <small>Payout coasted at reserve rate to Day 365</small>
+          </div>
+          <div class="result-value" id="anniversaryValue">$0.00</div>
+        </div>
+
+        <div class="result-item highlight-green">
+          <div class="result-label">
+            Real-World 1-Year ROI
+            <small>Net 1-Year Gain / Total Committed</small>
+          </div>
+          <div class="result-value" id="realRoi">0.00%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Pre-Funded Discounting Tool • Ready for GitHub Pages</p>
+  </footer>
+</div>
+
+<script>
+  function initDates() {
+    const today = new Date();
+    const currentYear = today.getFullYear();
+
+    // Default Start Date = Today
+    document.getElementById('startDate').value = today.toISOString().split('T')[0];
+
+    // Default Inflow Date = Next year April 1
+    const nextApril1 = `${currentYear + 1}-04-01`;
+    document.getElementById('inflowDate').value = nextApril1;
+
+    // Default Obligation Date = Year after next April 1
+    const yearAfterNextApril1 = `${currentYear + 2}-04-01`;
+    document.getElementById('obligationDate').value = yearAfterNextApril1;
+  }
+
+  function calculate() {
+    const startDate = new Date(document.getElementById('startDate').value);
+    const obligationDate = new Date(document.getElementById('obligationDate').value);
+    const inflowDate = new Date(document.getElementById('inflowDate').value);
+
+    const initialOutlay = parseFloat(document.getElementById('initialOutlay').value) || 0;
+    const obligationAmount = parseFloat(document.getElementById('obligationAmount').value) || 0;
+    const inflowAmount = parseFloat(document.getElementById('inflowAmount').value) || 0;
+    const ratePercent = parseFloat(document.getElementById('discountRate').value) || 0;
+
+    const r = ratePercent / 100;
+
+    if (isNaN(startDate.getTime()) || isNaN(obligationDate.getTime()) || isNaN(inflowDate.getTime())) {
+      return;
+    }
+
+    // Days calculations
+    const msPerDay = 1000 * 60 * 60 * 24;
+    const daysObligation = Math.max(0, Math.round((obligationDate - startDate) / msPerDay));
+    const daysInflow = Math.max(0, Math.round((inflowDate - startDate) / msPerDay));
+
+    // 1-Year Anniversary Date (365 days after Start Date)
+    const daysCoasting = Math.max(0, 365 - daysInflow);
+
+    // 1. Discount Future Obligation back to Day 1
+    const pvReserve = obligationAmount / Math.pow(1 + r, daysObligation / 365);
+    const totalCommitted = initialOutlay + pvReserve;
+
+    // 2. Coast Inflow to 1-Year Anniversary
+    const anniversaryValue = inflowAmount * Math.pow(1 + r, daysCoasting / 365);
+
+    // 3. Calculate 1-Year ROI
+    const netProfit1Yr = anniversaryValue - totalCommitted;
+    const realRoi = totalCommitted > 0 ? (netProfit1Yr / totalCommitted) * 100 : 0;
+
+    // Format outputs
+    const fmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+
+    document.getElementById('pvReserve').innerText = fmt.format(pvReserve);
+    document.getElementById('totalCommitted').innerText = fmt.format(totalCommitted);
+    document.getElementById('daysObligation').innerText = `${daysObligation} days`;
+    document.getElementById('anniversaryValue').innerText = fmt.format(anniversaryValue);
+    document.getElementById('realRoi').innerText = `${realRoi.toFixed(2)}%`;
+  }
+
+  // Attach event listeners
+  document.addEventListener('DOMContentLoaded', () => {
+    initDates();
+    calculate();
+
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+      input.addEventListener('input', calculate);
+    });
+  });
+</script>
+
+</body>
+</html>
