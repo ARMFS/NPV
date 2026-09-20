@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Pre-Funded Return Calculator</title>
-  <!-- Google Font: PT Mono -->
+  <!-- Google Fonts: PT Mono & PT Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=PT+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -20,13 +20,14 @@
       --border: #cbd5e1;
       --success: #15803d;
       --success-bg: #f0fdf4;
+      --font-mono: 'PT Mono', monospace;
+      --font-sans: 'PT Sans', sans-serif;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'PT Mono', monospace;
     }
 
     html, body {
@@ -43,6 +44,7 @@
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
+      font-family: var(--font-sans);
     }
 
     .container {
@@ -61,12 +63,14 @@
       color: var(--primary);
       font-size: 1.6rem;
       font-weight: 700;
+      font-family: var(--font-sans);
     }
 
     header p {
       color: #64748b;
       font-size: 0.875rem;
       margin-top: 4px;
+      font-family: var(--font-sans);
     }
 
     .grid {
@@ -87,11 +91,13 @@
     }
 
     .card h2 {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       color: var(--primary);
       margin-bottom: 18px;
       padding-bottom: 8px;
       border-bottom: 2px solid var(--primary-light);
+      font-family: var(--font-sans);
+      font-weight: 700;
     }
 
     .section-title {
@@ -101,6 +107,8 @@
       color: #64748b;
       margin-top: 12px;
       margin-bottom: 8px;
+      font-family: var(--font-sans);
+      letter-spacing: 0.03em;
     }
 
     .input-row {
@@ -118,16 +126,17 @@
     }
 
     .form-group label {
-      font-size: 0.775rem;
-      font-weight: 600;
+      font-size: 0.8rem;
+      font-weight: 700;
       color: #475569;
       margin-bottom: 4px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      font-family: var(--font-sans);
     }
 
-    /* Standardized Input Sizing & iOS Date Height Fix */
+    /* Input Styling & iOS Height Fix */
     .form-group input {
       width: 100%;
       min-width: 0;
@@ -139,16 +148,25 @@
       color: var(--text);
       background-color: #fff;
       transition: border-color 0.2s;
+      font-family: var(--font-mono);
       -webkit-appearance: none;
       appearance: none;
       line-height: normal;
     }
 
-    /* Fix iOS Safari Date Pseudo-Element Height */
+    /* Prevent iOS Safari Double-Height Date Input */
+    input[type="date"] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 38px;
+      line-height: 38px;
+    }
+
     input[type="date"]::-webkit-date-and-time-value {
       text-align: left;
       min-height: 1.2em;
       margin: 0;
+      padding: 0;
     }
 
     .form-group input:focus {
@@ -171,6 +189,7 @@
       align-items: center;
       user-select: none;
       -webkit-user-select: none;
+      font-family: var(--font-mono);
     }
 
     .checkbox-group {
@@ -193,10 +212,11 @@
     }
 
     .checkbox-group label {
-      font-size: 0.775rem;
-      font-weight: 600;
+      font-size: 0.825rem;
+      font-weight: 700;
       color: var(--primary);
       cursor: pointer;
+      font-family: var(--font-sans);
     }
 
     .results-list {
@@ -228,17 +248,19 @@
     }
 
     .result-label {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: #334155;
-      font-weight: 600;
+      font-weight: 700;
       min-width: 0;
+      font-family: var(--font-sans);
     }
 
     .result-label small {
       display: block;
       color: #64748b;
-      font-size: 0.7rem;
+      font-size: 0.725rem;
       font-weight: normal;
+      font-family: var(--font-sans);
     }
 
     .result-value {
@@ -247,6 +269,7 @@
       color: var(--primary);
       white-space: nowrap;
       text-align: right;
+      font-family: var(--font-mono);
     }
 
     .result-item.highlight-green .result-value {
@@ -259,6 +282,7 @@
       text-align: center;
       font-size: 0.75rem;
       color: #94a3b8;
+      font-family: var(--font-sans);
     }
 
     /* RESPONSIVE MEDIA QUERIES */
@@ -296,13 +320,14 @@
       }
 
       .form-group label {
-        font-size: 0.7rem;
+        font-size: 0.725rem;
       }
 
-      .form-group input, .static-date-display {
+      .form-group input, .static-date-display, input[type="date"] {
         padding: 0 6px;
         font-size: 0.78rem;
         height: 34px;
+        line-height: 34px;
       }
 
       .result-item {
@@ -310,7 +335,7 @@
       }
 
       .result-label {
-        font-size: 0.73rem;
+        font-size: 0.78rem;
       }
 
       .result-value {
