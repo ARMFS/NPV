@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Pre-Funded Return Calculator</title>
-  <!-- Google Fonts: PT Mono & Libre Franklin -->
+  <!-- Google Fonts: PT Mono, PT Sans & Libre Franklin -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700;800&family=PT+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700;800&family=PT+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -21,7 +21,8 @@
       --success: #15803d;
       --success-bg: #f0fdf4;
       --font-mono: 'PT Mono', monospace;
-      --font-sans: 'Libre Franklin', sans-serif;
+      --font-sans: 'PT Sans', sans-serif;
+      --font-header: 'Libre Franklin', sans-serif;
     }
 
     * {
@@ -60,22 +61,20 @@
       padding: 0 8px;
     }
 
-    /* Header Title: Libre Franklin, Bold */
     header h1 {
       color: var(--primary);
-      font-size: 2.3rem;
+      font-size: 2.1rem;
       font-weight: 800;
-      font-family: var(--font-sans);
+      font-family: var(--font-header);
       letter-spacing: -0.02em;
     }
 
-    /* Header Subtitle: Libre Franklin, Regular */
     header p {
       color: #64748b;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 400;
       margin-top: 4px;
-      font-family: var(--font-sans);
+      font-family: var(--font-header);
     }
 
     .grid {
@@ -95,15 +94,16 @@
       min-width: 0;
     }
 
-    /* Card Titles (Transaction Details & Return Summary): Bold PT Mono */
+    /* Card Titles: Smaller PT Sans */
     .card h2 {
-      font-size: 1.35rem;
+      font-size: 1.1rem;
       color: var(--primary);
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       padding-bottom: 8px;
       border-bottom: 2px solid var(--primary-light);
-      font-family: var(--font-mono);
+      font-family: var(--font-sans);
       font-weight: 700;
+      letter-spacing: 0.01em;
     }
 
     .section-title {
@@ -297,15 +297,15 @@
       }
 
       header h1 {
-        font-size: 1.85rem;
+        font-size: 1.75rem;
       }
 
       header p {
-        font-size: 1rem;
+        font-size: 0.95rem;
       }
 
       .card h2 {
-        font-size: 1.25rem;
+        font-size: 1.05rem;
       }
 
       .grid {
@@ -324,7 +324,7 @@
       }
 
       header h1 {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
       }
 
       .card {
